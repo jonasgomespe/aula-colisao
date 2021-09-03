@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{margin: 0;padding: 0;}
+        div:nth-child(1){
+            position: absolute;
+            border: dashed 2px #000;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            vertical-align: center;
+            left: 400px;
+            top: 100px;
+        }
+        div:nth-child(2){
+            position: absolute;
+            border: dashed 2px #000;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            vertical-align: center;
+            left: 300px;
+            top: 350px;
+        }
+    </style>
+</head>
+<body onkeydown="keyEvent(event)">
+    
+<div id="nome">Div de teste de colisão 1</div>
+<div id="referencia" >Objeto movel</div>
+
+<script>
+
+    const inputs            = document.querySelector("#nome");
+    const divs              = document.querySelector("#referencia");
+    var yReferencia         = posicaoY(divs);
+    var xReferencia         = posicaoX(divs);
+    const sizeObj           = 202;
+    const veloCidadeControl = 5;
+
+    function keyEvent(event) {
+        var key     = event.keyCode || event.which;
+        
+        if( key == 38 ){
+            colisaoObj(divs,inputs);
+            yReferencia = yReferencia - veloCidadeControl;
+        }
+        
+        if( key == 40 ){
+            colisaoObj(divs,inputs);
+            yReferencia = yReferencia + veloCidadeControl;
+        }
+
+        if( key == 37 ){
+            colisaoObj(divs,inputs);
+            xReferencia = xReferencia - veloCidadeControl;
+        }
+
+        if( key == 39 ){
+            colisaoObj(divs,inputs);
+            xReferencia = xReferencia + veloCidadeControl;
+        }
+
+        divs.style.top  = yReferencia+'px';
+        divs.style.left = xReferencia+'px';
+        
+    }
+
+    function posicaoX(objetos) {
+        var el          = objetos;
+        var coordenadas = el.getBoundingClientRect();
+
+        return parseInt(coordenadas.left);
+    }
+
+    function posicaoY(objetos) {
+        var el          = objetos;
+        var coordenadas = el.getBoundingClientRect();
+
+        return parseInt(coordenadas.top);
+    }
+
+    function colisaoObj(objeto1, objeto2){
+        obj1X = posicaoX(objeto1);
+        obj1Y = posicaoY(objeto1);
+
+        obj2X = posicaoX(objeto2);
+        obj2Y = posicaoY(objeto2);
+
+        divs.style.backgroundColor = (  
+            obj1X <= obj2X + sizeObj && obj1X >= obj2X - sizeObj &&  obj1Y <= obj2Y + sizeObj && obj1Y >= obj2Y - sizeObj ? 'red' : 'white' 
+        );
+    }
+
+</script>
+</body>
+</html>
